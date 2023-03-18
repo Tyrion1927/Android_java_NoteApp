@@ -42,7 +42,6 @@
             android:text="content"
             android:layout_weight="1"
             android:padding="10dp">
-
         </TextView>
     </LinearLayout>
 </RelativeLayout>

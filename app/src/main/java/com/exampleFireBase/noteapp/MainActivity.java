@@ -91,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
                 addNote();
             }
         });
-
     }
 
     public void addNote(){
@@ -112,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
                 String id = myRef.push().getKey();
                 String title = edtTitle.getText().toString();
                 String content = edtContent.getText().toString();
-
                 myRef.child(id).setValue(new Post(id, title, content, getRandomColor())).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -126,11 +124,39 @@ public class MainActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-
         dialog.show();
-
-
     }
+
+    public void UpdateNote(String idNote, String Title, String Content){
+        AlertDialog.Builder mDialog = new AlertDialog.Builder(this);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View mView = inflater.inflate(R.layout.add_note, null);
+        mDialog.setView(mView);
+
+        AlertDialog dialog = mDialog.create();
+        dialog.setCancelable(true);
+
+        EditText edtTitle = mView.findViewById(R.id.edt_edTitle);
+        EditText edtContent = mView.findViewById(R.id.edt_edContent);
+        edtTitle.setText(Title);
+        edtContent.setText(Content);
+        Button Save = mView.findViewById(R.id.btn_Save);
+        Save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String id = idNote;
+                String title = edtTitle.getText().toString();
+                String content = edtContent.getText().toString();
+
+                myRef.child(id).child("title").setValue(title);
+                myRef.child(id).child("content").setValue(content);
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+
 
     @Override
     public void onStart() {
@@ -166,13 +192,17 @@ public class MainActivity extends AppCompatActivity {
                         popupMenu.getMenu().add("Edit").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                                UpdateNote(model.getId(), model.getTitle(), model.getContent());
                                 return false;
                             }
                         });
                         popupMenu.getMenu().add("Delete").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
-                                return false;
+                                String id = model.getId();
+                                myRef.child(id).removeValue();
+                                Toast.makeText(getApplicationContext(), "Email clicked", Toast.LENGTH_SHORT).show();
+                                return true;
                             }
                         });
                         popupMenu.show();

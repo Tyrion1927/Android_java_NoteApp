@@ -15,12 +15,14 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="Email"
+        android:text="user1@gmail.com"
         android:inputType="textEmailAddress"
         android:layout_margin="10dp">
     </EditText>
 
     <EditText
         android:id="@+id/edt_pass"
+        android:text="123456"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="Password"
